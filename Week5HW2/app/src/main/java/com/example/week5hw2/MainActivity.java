@@ -59,50 +59,35 @@ public class MainActivity extends AppCompatActivity {
         buttonMinus50.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progress = progressBar.getProgress();
-                if ((progress - 50)>0){
-                    progress -= 50;
-
-                }else{
-                    progress = 0;
-                }
-                Log.d(TAG, "onClick: progress is " + progress);
-                progressBar.setProgress(progress);
+                pbService.minusProgress(50);
             }
         });
 
         buttonPlus20.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progress = progressBar.getProgress();
-                if ((progress + 20) <= 100) {
-                    progress+=20;
-                } else {
-                    progress = 100;
-                }
-                progressBar.setProgress(progress);
+                pbService.plusProgress(20);
             }
         });
 
         buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progress = 0;
-                progressBar.setProgress(0);
+                pbService.clearProgress();
             }
         });
 
         buttonFill100.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progress = 100;
-                progressBar.setProgress(100);
+                pbService.fillProgress();
             }
         });
 
+        Log.d(TAG, "onCreate: before binding");
         Intent intent = new Intent(this, PBService.class);
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         handler = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -121,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             unbindService(serviceConnection);
         }
     }
+
 
 
 }

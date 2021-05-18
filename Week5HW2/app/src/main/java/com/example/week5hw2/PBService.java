@@ -16,11 +16,11 @@ public class PBService extends Service {
     private IBinder binder = new LocalBinder();
     private Handler handler;
     private int progress = 0;
+    private Thread thread;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        handler = MainActivity.handler;
 
     }
 
@@ -35,15 +35,39 @@ public class PBService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        handler = MainActivity.handler;
+        Log.d(TAG, "onBind: binding");
+
+//        thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                progress += 5;
+//                Log.d(TAG, "run: progress is " + progress);
+//                handler.sendEmptyMessage(progress);
+//                try {
+//                    Thread.sleep(200);
+//
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//        thread.start();
+
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                progress += 5;
+                if ((progress + 5) >= 100){
+                    progress = 100;
+                } else{
+                    progress += 5;
+                }
                 Log.d(TAG, "run: progress is " + progress);
                 handler.sendEmptyMessage(progress);
-                handler.postDelayed(this, 200);
+                handler.postDelayed(this, 400);
             }
-        }, 200);
+        }, 400);
         return binder;
 
     }
@@ -52,4 +76,26 @@ public class PBService extends Service {
     public void onDestroy() {
         super.onDestroy();
     }
+
+
+    public void minusProgress(int minus){
+        progress -= minus;
+        Log.d(TAG, "minusProgress: progress is " + progress);
+    }
+
+    public void plusProgress(int plus){
+        progress += plus;
+        Log.d(TAG, "plusProgress: progress is " + progress);
+    }
+
+    public void clearProgress(){
+        progress = 0;
+        Log.d(TAG, "clearProgress: progress is " + progress);
+    }
+
+    public void fillProgress(){
+        progress = 100;
+        Log.d(TAG, "fillProgress: progress is " + progress);
+    }
+
 }
