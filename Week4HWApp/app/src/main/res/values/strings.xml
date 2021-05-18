@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Week4Application</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_exit">Выход</string>
+    <string name="menu_search">Поиск</string>
+    <string name="activity_text">Inside activity</string>
+    <string name="main_fragment_text">Main fragment</string>
+    <string name="search_fragment_text">Search Fragment</string>
+    <string name="settings_fragment_text">Settings Fragment</string>
+    <string name="search_fragment_button_text">Search</string>
+    <string name="settings_fragment_rb_google">Google</string>
+    <string name="settings_fragment_rb_yandex">Yandex</string>
+    <string name="settings_fragment_rb_bing">Bing</string>
+    <string name="search_request_hint">Search request</string>
+</resources>
