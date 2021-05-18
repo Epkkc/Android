@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Week5HW2</string>
+    <string name="minus_50">Minus 50%</string>
+    <string name="plus_20">Plus 20%</string>
+    <string name="clear">Clear</string>
+    <string name="fill_100">Fill 100%</string>
+</resources>

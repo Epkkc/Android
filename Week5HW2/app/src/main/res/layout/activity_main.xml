@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/pb_main_ac"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+    <Button
+        android:id="@+id/btn_minus_50_main_ac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/minus_50"/>
+    <Button
+        android:id="@+id/btn_plus_20_main_ac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/plus_20"/>
+    <Button
+        android:id="@+id/btn_clear_main_ac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/clear"/>
+    <Button
+        android:id="@+id/btn_100_main_ac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fill_100"/>
+
+
+
+</LinearLayout>
