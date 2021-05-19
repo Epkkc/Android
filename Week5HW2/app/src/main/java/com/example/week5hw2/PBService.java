@@ -17,25 +17,29 @@ public class PBService extends Service {
     private Handler handler;
     private int progress = 0;
     private Thread thread;
+    private MainActivity.Callback callback;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        handler = new Handler(Looper.getMainLooper());
 
     }
 
-    public class LocalBinder extends Binder{
-         PBService getService(){
-             return PBService.this;
-         }
+    public class LocalBinder extends Binder {
+        PBService getService() {
+            return PBService.this;
+        }
 
+        void setCallback(MainActivity.Callback callback) {
+            PBService.this.callback = callback;
+        }
     }
 
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        handler = MainActivity.handler;
         Log.d(TAG, "onBind: binding");
 
 //        thread = new Thread(new Runnable() {
@@ -58,13 +62,16 @@ public class PBService extends Service {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if ((progress + 5) >= 100){
+                if ((progress + 5) >= 100) {
                     progress = 100;
-                } else{
+                } else {
                     progress += 5;
                 }
                 Log.d(TAG, "run: progress is " + progress);
-                handler.sendEmptyMessage(progress);
+                if (callback != null) {
+                    callback.onTick(progress);
+                }
+                //handler.sendEmptyMessage(progress);
                 handler.postDelayed(this, 400);
             }
         }, 400);
@@ -78,22 +85,32 @@ public class PBService extends Service {
     }
 
 
-    public void minusProgress(int minus){
-        progress -= minus;
+    public void minusProgress(int minus) {
+        if ((progress - minus) >= 0) {
+            progress -= minus;
+        } else {
+            progress = 0;
+        }
+
         Log.d(TAG, "minusProgress: progress is " + progress);
     }
 
-    public void plusProgress(int plus){
+    public void plusProgress(int plus) {
+        if ((progress + plus) <= 100) {
+            progress += plus;
+        } else {
+            progress = 100;
+        }
         progress += plus;
         Log.d(TAG, "plusProgress: progress is " + progress);
     }
 
-    public void clearProgress(){
+    public void clearProgress() {
         progress = 0;
         Log.d(TAG, "clearProgress: progress is " + progress);
     }
 
-    public void fillProgress(){
+    public void fillProgress() {
         progress = 100;
         Log.d(TAG, "fillProgress: progress is " + progress);
     }
