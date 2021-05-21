@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Week6HW1</string>
+    <string name="it_is_text_view">Text view</string>
+    <string name="text">text</string>
+    <string name="image_view">Image view</string>
+    <string name="add_text_view">Add Text View</string>
+    <string name="add_image_view">Add image view</string>
+</resources>
