@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class TextViewMock extends Mocks implements Parcelable {
-    private String subText;
+    private final String subText;
 
     public TextViewMock(int subText) {
         this.subText = String.valueOf(subText);
@@ -13,12 +13,6 @@ public class TextViewMock extends Mocks implements Parcelable {
     public String getSubText() {
         return subText;
     }
-
-    public void setSubText(String subText) {
-        this.subText = subText;
-    }
-
-
 
 
     @Override
@@ -31,7 +25,7 @@ public class TextViewMock extends Mocks implements Parcelable {
         dest.writeString(subText);
     }
 
-    public static final Parcelable.Creator<TextViewMock> CREATOR = new Parcelable.Creator<TextViewMock>(){
+    public static final Parcelable.Creator<TextViewMock> CREATOR = new Parcelable.Creator<TextViewMock>() {
         @Override
         public TextViewMock createFromParcel(Parcel source) {
             return new TextViewMock(Integer.parseInt(source.readString()));
@@ -42,11 +36,6 @@ public class TextViewMock extends Mocks implements Parcelable {
             return new TextViewMock[0];
         }
     };
-
-
-
-
-
 
 
 }

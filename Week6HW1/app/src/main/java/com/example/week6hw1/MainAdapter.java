@@ -1,6 +1,5 @@
 package com.example.week6hw1;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private int countText = 0;

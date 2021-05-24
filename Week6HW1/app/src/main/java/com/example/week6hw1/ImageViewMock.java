@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ImageViewMock extends Mocks implements Parcelable {
-    private String title;
+    private final String title;
 
     public ImageViewMock(int count) {
         this.title = "Image View " + count;
@@ -17,9 +17,6 @@ public class ImageViewMock extends Mocks implements Parcelable {
         return title;
     }
 
-    public void setTitle(int count) {
-        this.title = "Image View " + count;
-    }
 
     @Override
     public int describeContents() {

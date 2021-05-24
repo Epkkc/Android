@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ImageViewHolder extends RecyclerView.ViewHolder {
     private Mocks mock;
-    private TextView title;
+    private final TextView title;
 
 
     public ImageViewHolder(@NonNull View itemView) {
@@ -23,12 +23,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
 
 
     public void setListener(OnItemClickInterface callback) {
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.onItemClick(mock);
-            }
-        });
+        itemView.setOnClickListener(v -> callback.onItemClick(mock));
     }
 
     public void setMock(Mocks mock) {

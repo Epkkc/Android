@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TextViewHolder extends RecyclerView.ViewHolder {
     private Mocks mock;
-    private TextView subText;
+    private final TextView subText;
 
     public TextViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -20,12 +20,7 @@ public class TextViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setListener(OnItemClickInterface listener) {
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onItemClick(mock);
-            }
-        });
+        itemView.setOnClickListener(v -> listener.onItemClick(mock));
     }
 
     public void setMock(Mocks mock) {
