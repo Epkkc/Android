@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TextViewHolder extends RecyclerView.ViewHolder {
-
+    private Mocks mock;
     private TextView subText;
 
     public TextViewHolder(@NonNull View itemView) {
@@ -23,10 +23,12 @@ public class TextViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(Integer.parseInt(subText.getText().toString()));
+                listener.onItemClick(mock);
             }
         });
     }
 
-
+    public void setMock(Mocks mock) {
+        this.mock = mock;
+    }
 }

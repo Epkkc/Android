@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ImageViewHolder extends RecyclerView.ViewHolder {
-
+    private Mocks mock;
     private TextView title;
 
 
@@ -20,12 +20,18 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
         title.setText(imageView.getTitle());
     }
 
-//    public void setListener(OnItemClickInterface listener) {
-//        itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                listener.onItemClick();
-//            }
-//        });
-//    }
+
+
+    public void setListener(OnItemClickInterface callback) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.onItemClick(mock);
+            }
+        });
+    }
+
+    public void setMock(Mocks mock) {
+        this.mock = mock;
+    }
 }

@@ -49,10 +49,12 @@ public class TextViewAdapter extends RecyclerView.Adapter<TextViewHolder> {
         this.listener = listener;
     }
 
-    public void deleteElement(int pos) {
+    public void deleteElement(Mocks mock) {
+        int pos = mocks.indexOf(mock);
         mocks.remove(pos);
         notifyItemRemoved(pos);
         notifyItemRangeChanged(pos, mocks.size() - 1);
+        count--;
         //notifyDataSetChanged();
     }
 }
