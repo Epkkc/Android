@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Week6HW3</string>
+    <string name="download_image">Download image</string>
+    <string name="show_image">Show image</string>
+</resources>
