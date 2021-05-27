@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MainActivity.this, "There is no permission", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 

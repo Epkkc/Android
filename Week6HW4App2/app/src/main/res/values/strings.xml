@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">SecondAppForContentProviderTest</string>
+    <string name="id">id</string>
+    <string name="name">name</string>
+    <string name="release">release</string>
+    <string name="duration">duration</string>
+    <string name="album_id">album id</string>
+    <string name="song_id">song id</string>
+
+    <string-array name="spinner1">
+        <item>Albums</item>
+        <item>Songs</item>
+        <item>AlbumSongs</item>
+    </string-array>
+    <string-array name="spinner2">
+        <item>query</item>
+        <item>insert</item>
+        <item>update</item>
+        <item>delete</item>
+    </string-array>
+    <string name="action">Action</string>
+</resources>
