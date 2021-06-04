@@ -2,7 +2,7 @@ package com.elegion.myfirstapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -17,25 +17,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.elegion.myfirstapplication.Model.NewUser;
-import com.elegion.myfirstapplication.Model.User;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
-import java.io.IOException;
-
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
 
 public class AuthFragment extends Fragment {
-	public static final String TAG = AuthFragment.class.getSimpleName();
+    public static final String TAG = AuthFragment.class.getSimpleName();
     private EditText mLogin;
     private EditText mName;
     private EditText mPassword;
-    private Button mEnter;
-    private Button mRegister;
 
     public static AuthFragment newInstance() {
         Bundle args = new Bundle();
@@ -45,34 +35,32 @@ public class AuthFragment extends Fragment {
         return fragment;
     }
 
-    private View.OnClickListener mOnEnterClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mOnEnterClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             if (isEmailValid() && isPasswordValid()) {
 
 
-				APIUtils.getAPI().getUser().enqueue(new retrofit2.Callback<NewUser>() {
+                APIUtils.getAPI(mLogin.getText().toString(), mPassword.getText().toString()).getUser().enqueue(new retrofit2.Callback<NewUser>() {
                     @Override
-                    public void onResponse(Call<NewUser> call, Response<NewUser> response) {
-                        Log.i(TAG, "run: THERE IS A Response"  + response.code());
+                    public void onResponse(@NonNull Call<NewUser> call, @NonNull Response<NewUser> response) {
+                        Log.i(TAG, "run: THERE IS A Response" + response.code());
 
-                        if (response.isSuccessful()){
-							Log.i(TAG, "run: Successful Response"  + response.code());
-                            Gson gson = new Gson();
-                            NewUser user = gson.fromJson(response.body().toString(), NewUser.class);
+                        if (response.isSuccessful()) {
+                            Log.i(TAG, "run: Successful Response " + response.code());
+                            NewUser user = response.body();
                             Intent startProfileIntent =
                                     new Intent(getActivity(), ProfileActivity.class);
-                            startProfileIntent.putExtra(ProfileActivity.USER_KEY, user.getData());
+                            startProfileIntent.putExtra(ProfileActivity.USER_KEY, user);
                             startActivity(startProfileIntent);
                             getActivity().finish();
                         } else {
-							// todo детальна обработка ошибок
-							Log.i(TAG, "run:  Fail Auth" + response.code());
-						}
+                            Log.i(TAG, "run:  Fail Auth" + response.code());
+                        }
                     }
 
                     @Override
-                    public void onFailure(Call<NewUser> call, Throwable t) {
+                    public void onFailure(@NonNull Call<NewUser> call, @NonNull Throwable t) {
                         Log.i(TAG, "run:  Failure ");
 
                     }
@@ -106,7 +94,6 @@ public class AuthFragment extends Fragment {
 //								e.printStackTrace();
 //							}
 //						} else {
-//							// todo детальна обработка ошибок
 //							Log.i(TAG, "run:  Fail Auth" + response.code());
 //						}
 //					}
@@ -118,7 +105,7 @@ public class AuthFragment extends Fragment {
         }
     };
 
-    private View.OnClickListener mOnRegisterClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mOnRegisterClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             getFragmentManager()
@@ -149,8 +136,8 @@ public class AuthFragment extends Fragment {
         mLogin = v.findViewById(R.id.etLogin);
         mName = v.findViewById(R.id.etName);
         mPassword = v.findViewById(R.id.etPassword);
-        mEnter = v.findViewById(R.id.buttonEnter);
-        mRegister = v.findViewById(R.id.buttonRegister);
+        Button mEnter = v.findViewById(R.id.buttonEnter);
+        Button mRegister = v.findViewById(R.id.buttonRegister);
 
         mEnter.setOnClickListener(mOnEnterClickListener);
         mRegister.setOnClickListener(mOnRegisterClickListener);

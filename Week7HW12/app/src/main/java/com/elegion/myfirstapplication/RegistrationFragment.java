@@ -3,12 +3,11 @@ package com.elegion.myfirstapplication;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -18,40 +17,32 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.elegion.myfirstapplication.Model.NewUser;
 import com.elegion.myfirstapplication.Model.RegModel;
 import com.elegion.myfirstapplication.Model.User;
 import com.google.gson.Gson;
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.io.IOException;
 
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
 public class RegistrationFragment extends Fragment {
     public static final String TAG = RegistrationFragment.class.getSimpleName();
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private EditText mLogin;
     private EditText mName;
     private EditText mPassword;
     private EditText mPasswordAgain;
-    private Button mRegistration;
 
-    private Drawable defaultEditTextState;
+    private Drawable defaultEditTextStateLogin;
+    private Drawable defaultEditTextStateName;
+    private Drawable defaultEditTextStatePas;
 
     public static RegistrationFragment newInstance() {
         return new RegistrationFragment();
     }
 
-    private View.OnClickListener mOnRegistrationClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mOnRegistrationClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             if (isInputValid()) {
@@ -63,14 +54,15 @@ public class RegistrationFragment extends Fragment {
                 );
 
 
-                APIUtils.getAPI().registration(user).enqueue(new retrofit2.Callback<RegModel>() {
-                    Handler handler = new Handler(getActivity().getMainLooper());
+                APIUtils.getAPI(mLogin.getText().toString(), mPassword.getText().toString()).registration(user).enqueue(new retrofit2.Callback<RegModel>() {
+                    final Handler handler = new Handler(getActivity().getMainLooper());
 
                     @Override
-                    public void onResponse(Call<RegModel> call, final Response<RegModel> response) {
+                    public void onResponse(@NonNull Call<RegModel> call, @NonNull final Response<RegModel> response) {
                         if (response.isSuccessful()) {
                             Log.i(TAG, "run:  Successful Response" + response.code());
 
+                            Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
                             getFragmentManager().popBackStack();
                         } else {
                             switch (response.code()) {
@@ -86,26 +78,25 @@ public class RegistrationFragment extends Fragment {
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
-                                            if (regModel.getErrors().getEmail() != null){
-                                                if (regModel.getErrors().getEmail().get(0).equals("Такое значение поля email уже существует.")){
+                                            if (regModel.getErrors().getEmail() != null) {
+                                                if (regModel.getErrors().getEmail().get(0).equals("Такое значение поля email уже существует.")) {
                                                     // Подсветить поле с email
-                                                   mLogin.setBackgroundResource(R.drawable.border); // Рабочий костыль
+                                                    mLogin.setBackgroundResource(R.drawable.border); // Рабочий костыль
                                                     //mLogin.setTextColor(getResources().getColor(R.color.red));
                                                 }
                                             }
-                                            if (regModel.getErrors().getPassword() != null){
-                                                if (regModel.getErrors().getPassword().get(0).equals("Количество символов в поле должно быть не менее 8.")){
+                                            if (regModel.getErrors().getPassword() != null) {
+                                                if (regModel.getErrors().getPassword().get(0).equals("Количество символов в поле должно быть не менее 8.")) {
                                                     // Подсветить поля с паролями
                                                     mPassword.setBackgroundResource(R.drawable.border);
                                                 }
                                             }
-                                            if (regModel.getErrors().getName() != null){
-                                                if (regModel.getErrors().getName().get(0).equals("Поле обязательно для заполнения.")){
+                                            if (regModel.getErrors().getName() != null) {
+                                                if (regModel.getErrors().getName().get(0).equals("Поле обязательно для заполнения.")) {
                                                     // Подсветить поле с именем
                                                     mName.setBackgroundResource(R.drawable.border);
                                                 }
                                             }
-
 
 
                                         }
@@ -120,13 +111,12 @@ public class RegistrationFragment extends Fragment {
                                     }, 10);
                                     break;
                             }
-                            // todo детальна обработка ошибок
                             Log.i(TAG, "run:  Fail Response" + response.code());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<RegModel> call, Throwable t) {
+                    public void onFailure(@NonNull Call<RegModel> call, @NonNull Throwable t) {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -136,29 +126,6 @@ public class RegistrationFragment extends Fragment {
                     }
                 });
 
-/*                    Handler handler = new Handler(getActivity().getMainLooper());
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.i(TAG, "run:  Failure");
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        if (response.isSuccessful()){
-                            Log.i(TAG, "run:  Successful Response"  + response.code());
-
-                            getFragmentManager().popBackStack();
-                        } else {
-                            // todo детальна обработка ошибок
-                            Log.i(TAG, "run:  Fail Response" + response.code());
-                        }
-                    }
-                });*/
             } else {
                 showMessage(R.string.input_error);
             }
@@ -175,28 +142,30 @@ public class RegistrationFragment extends Fragment {
         mName = view.findViewById(R.id.etName);
         mPassword = view.findViewById(R.id.etPassword);
         mPasswordAgain = view.findViewById(R.id.tvPasswordAgain);
-        mRegistration = view.findViewById(R.id.btnRegistration);
+        Button mRegistration = view.findViewById(R.id.btnRegistration);
 
         mRegistration.setOnClickListener(mOnRegistrationClickListener);
-        defaultEditTextState = mLogin.getBackground();
+        defaultEditTextStateLogin = mLogin.getBackground();
+        defaultEditTextStateName = mName.getBackground();
+        defaultEditTextStatePas = mPassword.getBackground();
         mLogin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                mLogin.setBackground(defaultEditTextState);
+                mLogin.setBackground(defaultEditTextStateLogin);
             }
         });
 
         mName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                mName.setBackground(defaultEditTextState);
+                mName.setBackground(defaultEditTextStateName);
             }
         });
 
         mPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                mPassword.setBackground(defaultEditTextState);
+                mPassword.setBackground(defaultEditTextStatePas);
             }
         });
 
@@ -206,11 +175,7 @@ public class RegistrationFragment extends Fragment {
 
     private boolean isInputValid() {
         String email = mLogin.getText().toString();
-        if (isEmailValid(email) && isPasswordsValid()) {
-            return true;
-        }
-
-        return false;
+        return isEmailValid(email) && isPasswordsValid();
     }
 
     private boolean isEmailValid(String email) {

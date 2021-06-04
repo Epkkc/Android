@@ -8,6 +8,7 @@ import com.elegion.myfirstapplication.Model.Song;
 import com.elegion.myfirstapplication.Model.Songs;
 import com.elegion.myfirstapplication.Model.User;
 
+import io.reactivex.Completable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -31,6 +32,6 @@ public interface ApiInt {
     @GET("songs/{id}")
     Call<Song> getSong(@Path("id") int id);
 
-    @GET("user/")
+    @GET("user")
     Call<NewUser> getUser();
 }
