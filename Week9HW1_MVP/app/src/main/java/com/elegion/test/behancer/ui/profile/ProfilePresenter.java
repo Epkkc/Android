@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.elegion.test.behancer.common.BasePresenter;
 import com.elegion.test.behancer.data.Storage;
+import com.elegion.test.behancer.data.api.BehanceApi;
 import com.elegion.test.behancer.data.model.user.User;
 import com.elegion.test.behancer.utils.ApiUtils;
 import com.squareup.picasso.Picasso;
@@ -16,6 +17,8 @@ import com.squareup.picasso.Target;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -23,15 +26,17 @@ public class ProfilePresenter extends BasePresenter {
 
     public static final String TAG = ProfileView.class.getSimpleName();
     private ProfileView mView;
-    private Storage mStorage;
+    @Inject
+    Storage mStorage;
+    @Inject
+    BehanceApi mApi;
 
-    public ProfilePresenter(ProfileView mView, Storage mStorage) {
+    public ProfilePresenter(ProfileView mView) {
         this.mView = mView;
-        this.mStorage = mStorage;
     }
 
     public void getProfile(String mUsername) {
-        mCompositDisposable.add(ApiUtils.getApiService().getUserInfo(mUsername)
+        mCompositDisposable.add(mApi.getUserInfo(mUsername)
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess(response -> mStorage.insertUser(response))
                 .onErrorReturn(throwable ->

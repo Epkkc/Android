@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.elegion.test.behancer.AppDelegate;
 import com.elegion.test.behancer.R;
 import com.elegion.test.behancer.common.RefreshOwner;
 import com.elegion.test.behancer.common.Refreshable;
@@ -34,12 +35,13 @@ import io.reactivex.schedulers.Schedulers;
 public class ProfileFragment extends Fragment implements Refreshable, ProfileView {
 
     public static final String PROFILE_KEY = "PROFILE_KEY";
+
     private ProfilePresenter mPresenter;
+
     private RefreshOwner mRefreshOwner;
     private View mErrorView;
     private View mProfileView;
     private String mUsername;
-    private Storage mStorage;
     private Disposable mDisposable;
 
     private ImageView mProfileImage;
@@ -54,11 +56,15 @@ public class ProfileFragment extends Fragment implements Refreshable, ProfileVie
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AppDelegate.
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mStorage = context instanceof Storage.StorageOwner ? ((Storage.StorageOwner) context).obtainStorage() : null;
         mRefreshOwner = context instanceof RefreshOwner ? (RefreshOwner) context : null;
     }
 
@@ -92,7 +98,7 @@ public class ProfileFragment extends Fragment implements Refreshable, ProfileVie
         }
 
         mProfileView.setVisibility(View.VISIBLE);
-        mPresenter = new ProfilePresenter(this, mStorage);
+        mPresenter = new ProfilePresenter(this);
         onRefreshData();
     }
 
@@ -120,7 +126,6 @@ public class ProfileFragment extends Fragment implements Refreshable, ProfileVie
 
     @Override
     public void onDetach() {
-        mStorage = null;
         mRefreshOwner = null;
         if (mDisposable != null) {
             mDisposable.dispose();
