@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GitApi</string>
+    <string name="error_message_layout">Connection error</string>
+    <string name="no_followers_message_layout">There are no followers</string>
+</resources>
