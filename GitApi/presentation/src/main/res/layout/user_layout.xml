@@ -17,8 +17,10 @@
         android:layout_toEndOf="@+id/avatar_img" />
 
     <TextView
-        android:id="@+id/followers_number"
+        android:id="@+id/type"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_width="wrap_content"
+        android:layout_alignLeft="@id/username"
+        android:layout_below="@+id/username"/>
 
 </RelativeLayout>

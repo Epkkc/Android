@@ -13,7 +13,7 @@ public class Utils {
 
     private static OkHttpClient client;
 
-    public static OkHttpClient getClient(){
+    private static OkHttpClient getClient(){
         if (client != null) return client;
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
@@ -23,7 +23,7 @@ public class Utils {
         return builder.build();
     }
 
-    public static Retrofit getRetrofit(){
+    private static Retrofit getRetrofit(){
         if (retrofit != null) return retrofit;
         retrofit = new Retrofit.Builder()
                                     .baseUrl(BASE_URL)

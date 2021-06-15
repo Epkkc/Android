@@ -20,4 +20,8 @@ public interface API {
     @Headers("Authorization:" + token)
     @GET("/users/{username}/followers")
     Call<List<User>> getFollowers(@Path("username") String username);
+
+    @Headers("Authorization:" + token)
+    @GET("/users/{username}")
+    Call<User> getUserInfo(@Path("username") String username);
 }

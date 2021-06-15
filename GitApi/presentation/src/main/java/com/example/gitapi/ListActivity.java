@@ -17,7 +17,7 @@ import com.example.domain.model.User;
 import java.util.List;
 
 public class ListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, ListActivityInterface, RefreshInterface {
-
+    public static final String USERNAME = "USERNAME";
     public static final String USERNAME_KEY = "USERNAME_KEY";
 
     private ListActivityPresenter presenter;

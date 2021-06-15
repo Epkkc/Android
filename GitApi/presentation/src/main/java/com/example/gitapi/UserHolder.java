@@ -14,13 +14,13 @@ public class UserHolder extends RecyclerView.ViewHolder {
 
     private ImageView imageView;
     private TextView usernameTView;
-    private TextView followersTView;
+    private TextView type;
 
     public UserHolder(@NonNull View itemView) {
         super(itemView);
         imageView = itemView.findViewById(R.id.avatar_img);
         usernameTView = itemView.findViewById(R.id.username);
-        followersTView = itemView.findViewById(R.id.followers_number);
+        type = itemView.findViewById(R.id.type);
     }
 
     public void bind(User user, OnRecyclerItemClick listener){
@@ -31,7 +31,7 @@ public class UserHolder extends RecyclerView.ViewHolder {
                 .into(imageView);
 
         usernameTView.setText(user.getLogin());
-        //followersTView.setText(user.getFollowersNumber());
+        type.setText(user.getType());
 
         itemView.setOnClickListener(v -> listener.onItemClick(user.getLogin()));
 
